@@ -6,7 +6,6 @@ allowTitleToDifferFromFilename: true
 versions:
   fpt: '*'
   ghes: '*'
-  ghae: '*'
   ghec: '*'
 topics:
   - GitHub Apps
@@ -46,11 +45,11 @@ In order to develop your app locally, you can use a webhook proxy URL to forward
 
 The following steps will guide you through configuring the app settings that are required for this quickstart. For more information about the settings, see "[AUTOTITLE](/apps/creating-github-apps/creating-github-apps/creating-a-github-app)."
 
-{% data reusables.apps.settings-step %}
+{% data reusables.apps.settings-step-personal-orgs %}
 {% data reusables.user-settings.developer_settings %}
 {% data reusables.user-settings.github_apps %}
-1. Click **New GitHub App**.
-1. Under "GitHub App name", enter a name for your app. For example, `USERNAME-quickstart-app` where `USERNAME` is your {% data variables.product.company_short %} username.
+1. Click **New {% data variables.product.prodname_github_app %}**.
+1. Under "{% data variables.product.prodname_github_app %} name", enter a name for your app. For example, `USERNAME-quickstart-app` where `USERNAME` is your {% data variables.product.company_short %} username.
 1. Under "Homepage URL", enter `https://github.com/github/github-app-js-sample#readme`.
 1. Skip the "Identifying and authorizing users" and "Post installation" sections for this quickstart. For more information about these settings, see "[AUTOTITLE](/apps/creating-github-apps/creating-github-apps/creating-a-github-app)."
 1. Make sure that **Active** is selected under "Webhooks."
@@ -58,8 +57,8 @@ The following steps will guide you through configuring the app settings that are
 1. Under "Webhook secret", enter a random string. You will use this string later.
 1. Under "Repository permissions", next to "Pull requests," select **Read & write**.
 1. Under "Subscribe to events", select **Pull request**.
-1. Under "Where can this GitHub App be installed?", select **Only on this account**.
-1. Click **Create GitHub App**.
+1. Under "Where can this {% data variables.product.prodname_github_app %} be installed?", select **Only on this account**.
+1. Click **Create {% data variables.product.prodname_github_app %}**.
 
 ## Step 4: Store identifying information and credentials
 
@@ -73,12 +72,12 @@ Your cloned repository includes `.env` in the `.gitignore` file. This will preve
 
 1. Navigate to the directory where your clone of [github/github-app-js-sample](https://github.com/github/github-app-js-sample) is stored.
 1. Create a file called `.env` at the top level of this directory.
-1. Add the following contents to your `.env` file. {% ifversion ghes or ghae %}Replace `YOUR_HOSTNAME` with the name of {% data variables.location.product_location %}. You will update the other values in a later step.{% else %}You will update the values in a later step.{% endif %}
+1. Add the following contents to your `.env` file. {% ifversion ghes %}Replace `YOUR_HOSTNAME` with the name of {% data variables.location.product_location %}. You will update the other values in a later step.{% else %}You will update the values in a later step.{% endif %}
 
    ```text copy
    APP_ID="YOUR_APP_ID"
    WEBHOOK_SECRET="YOUR_WEBHOOK_SECRET"
-   PRIVATE_KEY_PATH="YOUR_PRIVATE_KEY_PATH"{% ifversion ghes or ghae %}
+   PRIVATE_KEY_PATH="YOUR_PRIVATE_KEY_PATH"{% ifversion ghes %}
    HOSTNAME="YOUR_HOSTNAME"{% endif %}
    ```
 

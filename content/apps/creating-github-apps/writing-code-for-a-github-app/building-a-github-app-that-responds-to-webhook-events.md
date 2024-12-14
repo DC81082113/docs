@@ -5,7 +5,6 @@ intro: 'Learn how to build a {% data variables.product.prodname_github_app %} th
 versions:
   fpt: '*'
   ghes: '*'
-  ghae: '*'
   ghec: '*'
 topics:
   - GitHub Apps
@@ -33,7 +32,7 @@ For more information, see "[AUTOTITLE](/apps/creating-github-apps/creating-githu
 
 ## Prerequisites
 
-This tutorial requires your computer or codespace to run Node.js version 12 or greater and npm version 6.12.0 or greater. For more information, see [Node.js](https://nodejs.org).
+This tutorial requires your computer or codespace to run Node.js version 20 or greater and npm version 6.12.0 or greater. For more information, see [Node.js](https://nodejs.org).
 
 This tutorial assumes you have a basic understanding of JavaScript and ES6 syntax.
 
@@ -41,9 +40,9 @@ This tutorial assumes you have a basic understanding of JavaScript and ES6 synta
 
 The following sections will lead you through setting up the following components:
 
-- a repository to store the code for your app
-- a way to receive webhooks locally
-- a {% data variables.product.prodname_github_app %} registration that is subscribed to "pull request" webhook events, has permission to add comments to pull requests, and uses a webhook URL that you can receive locally
+* A repository to store the code for your app
+* A way to receive webhooks locally
+* A {% data variables.product.prodname_github_app %} registration that is subscribed to "pull request" webhook events, has permission to add comments to pull requests, and uses a webhook URL that you can receive locally
 
 ### Create a repository to store code for your app
 
@@ -66,18 +65,17 @@ In order to develop your app locally, you can use a webhook proxy URL to forward
 
 For this tutorial, you must have a {% data variables.product.prodname_github_app %} registration that:
 
-- Has webhooks active
-- Uses a webhook URL that you can receive locally
-- Has the "Pull request" repository permission
-- Subscribes to the "Pull request" webhook event
+* Has webhooks active
+* Uses a webhook URL that you can receive locally
+* Has the "Pull request" repository permission
+* Subscribes to the "Pull request" webhook event
 
 The following steps will guide you through registering a {% data variables.product.prodname_github_app %} with these settings. For more information about {% data variables.product.prodname_github_app %} settings, see "[AUTOTITLE](/apps/creating-github-apps/creating-github-apps/creating-a-github-app)."
 
 {% data reusables.apps.settings-step %}
-{% data reusables.user-settings.developer_settings %}
-{% data reusables.user-settings.github_apps %}
-1. Click **New GitHub App**.
-1. Under "GitHub App name", enter a name for your app. For example, `USERNAME-webhook-test-app` where `USERNAME` is your {% data variables.product.company_short %} username.
+{% data reusables.apps.enterprise-apps-steps %}
+1. Click **New {% data variables.product.prodname_github_app %}**.
+1. Under "{% data variables.product.prodname_github_app %} name", enter a name for your app. For example, `USERNAME-webhook-test-app` where `USERNAME` is your {% data variables.product.company_short %} username.
 1. Under "Homepage URL", enter a URL for your app. For example, you can use the URL of the repository that you created to store the code for your app.
 1. Skip the "Identifying and authorizing users" and "Post installation" sections for this tutorial. For more information about these settings, see "[AUTOTITLE](/apps/creating-github-apps/creating-github-apps/creating-a-github-app)."
 1. Make sure that **Active** is selected under "Webhooks."
@@ -85,8 +83,9 @@ The following steps will guide you through registering a {% data variables.produ
 1. Under "Webhook secret", enter a random string. You will use this string later.
 1. Under "Repository permissions", next to "Pull requests," select **Read & write**.
 1. Under "Subscribe to events", select **Pull request**.
-1. Under "Where can this GitHub App be installed?", select **Only on this account**. You can change this later if you want to publish your app.
-1. Click **Create GitHub App**.
+1. Under "Where can this {% data variables.product.prodname_github_app %} be installed?", select **Only on this account**. You can change this later if you want to publish your app.{% ifversion enterprise-apps-public-beta %}
+    >[!NOTE] If your {% data variables.product.prodname_github_app %} is registered under an enterprise, this step does not apply.{% endif %}
+1. Click **Create {% data variables.product.prodname_github_app %}**.
 
 ## Write code for your app
 
@@ -116,12 +115,12 @@ Make sure that you are on a secure machine before performing these steps since y
 1. In your terminal, navigate to the directory where your clone is stored.
 1. Create a file called `.env` at the top level of this directory.
 1. Add `.env` to your `.gitignore` file. This will prevent you from accidentally committing your app's credentials.
-1. Add the following contents to your `.env` file. {% ifversion ghes or ghae %}Replace `YOUR_HOSTNAME` with the name of {% data variables.location.product_location %}. You will update the other values in a later step.{% else %}You will update the values in a later step.{% endif %}
+1. Add the following contents to your `.env` file. {% ifversion ghes %}Replace `YOUR_HOSTNAME` with the name of {% data variables.location.product_location %}. You will update the other values in a later step.{% else %}You will update the values in a later step.{% endif %}
 
    ```text copy
    APP_ID="YOUR_APP_ID"
    WEBHOOK_SECRET="YOUR_WEBHOOK_SECRET"
-   PRIVATE_KEY_PATH="YOUR_PRIVATE_KEY_PATH"{% ifversion ghes or ghae %}
+   PRIVATE_KEY_PATH="YOUR_PRIVATE_KEY_PATH"{% ifversion ghes %}
    ENTERPRISE_HOSTNAME="YOUR_HOSTNAME"{% endif %}
    ```
 
@@ -144,7 +143,7 @@ Add the following code to `app.js`. The code includes annotations that explain e
 //
 // You installed the `dotenv` and `octokit` modules earlier. The `@octokit/webhooks` is a dependency of the `octokit` module, so you don't need to install it separately. The `fs` and `http` dependencies are built-in Node.js modules.
 import dotenv from "dotenv";
-import {App{% ifversion ghes or ghae %}, Octokit{% endif %}} from "octokit";
+import {App{% ifversion ghes %}, Octokit{% endif %}} from "octokit";
 import {createNodeMiddleware} from "@octokit/webhooks";
 import fs from "fs";
 import http from "http";
@@ -155,7 +154,7 @@ dotenv.config();
 // This assigns the values of your environment variables to local variables.
 const appId = process.env.APP_ID;
 const webhookSecret = process.env.WEBHOOK_SECRET;
-const privateKeyPath = process.env.PRIVATE_KEY_PATH;{% ifversion ghes or ghae %}
+const privateKeyPath = process.env.PRIVATE_KEY_PATH;{% ifversion ghes %}
 const enterpriseHostname = process.env.ENTERPRISE_HOSTNAME;{% endif %}
 
 // This reads the contents of your private key file.
@@ -167,7 +166,7 @@ const app = new App({
   privateKey: privateKey,
   webhooks: {
     secret: webhookSecret
-  },{% ifversion ghes or ghae %}
+  },{% ifversion ghes %}
   Octokit: Octokit.defaults({
     baseUrl: `https://${enterpriseHostname}/api/v3`,
   }),{% endif %}
@@ -185,10 +184,10 @@ async function handlePullRequestOpened({octokit, payload}) {
       owner: payload.repository.owner.login,
       repo: payload.repository.name,
       issue_number: payload.pull_request.number,
-      body: messageForNewPRs,{% ifversion api-date-versioning %}
+      body: messageForNewPRs,
       headers: {
         "x-github-api-version": "{{ allVersions[currentVersion].latestApiVersion }}",
-      },{% endif %}
+      },
     });
   } catch (error) {
     if (error.response) {
@@ -248,13 +247,13 @@ http.createServer(middleware).listen(port, () => {
 
 1. In your `package.json` file, add a top level key `type` with the value `module`. For example:
 
-   ```json
+   ```jsonc
       {
-       ...rest of the JSON object,
+       // rest of the JSON object,
        "version": "1.0.0",
        "description": "",
        "type": "module",
-       ...rest of the JSON object,
+       // rest of the JSON object,
      }
    ```
 

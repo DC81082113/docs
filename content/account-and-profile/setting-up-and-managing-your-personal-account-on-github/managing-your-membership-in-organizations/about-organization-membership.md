@@ -9,7 +9,6 @@ redirect_from:
 versions:
   fpt: '*'
   ghes: '*'
-  ghae: '*'
   ghec: '*'
 topics:
   - Accounts
@@ -21,21 +20,18 @@ You can access organizations you're a member of on your profile page. For more i
 
 When you accept an invitation to join an organization, the organization owners may be able to see:
 
-- Your public profile information
-- Your email address
-- If you have two-factor authorization enabled
-- Repositories you have access to within the organization, and your access level
-- Certain activity within the organization
-- Country of request origin
-- Your IP address
+* Your public profile information
+* Your email address
+* If you have two-factor authorization enabled
+* Repositories you have access to within the organization, and your access level
+* Certain activity within the organization
+* Country of request origin
+* Your IP address
 
 For more information, see the [{% data variables.product.prodname_dotcom %} Privacy Statement](/free-pro-team@latest/site-policy/privacy-policies/github-privacy-statement).
 
-  {% note %}
-
-  **Note:** Owners are not able to view member IP addresses in the organization's audit log. In the event of a security incident, such as an account compromise or inadvertent sharing of sensitive data, organization owners may request details of access to private repositories. The information we return may include your IP address.
-
-  {% endnote %}
+> [!NOTE]
+> Owners are not able to view member IP addresses in the organization's audit log. In the event of a security incident, such as an account compromise or inadvertent sharing of sensitive data, organization owners may request details of access to private repositories. The information we return may include your IP address.
 
 By default, your organization membership visibility is set to private. You can choose to publicize individual organization memberships on your profile. For more information, see "[AUTOTITLE](/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-membership-in-organizations/publicizing-or-hiding-organization-membership)."
 
@@ -49,5 +45,5 @@ You can leave an organization at any time. For more information, see "[AUTOTITLE
 
 ## Further reading
 
-- "[AUTOTITLE](/organizations/collaborating-with-groups-in-organizations/about-organizations)"
-- "[AUTOTITLE](/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-membership-in-organizations)"
+* "[AUTOTITLE](/organizations/collaborating-with-groups-in-organizations/about-organizations)"
+* "[AUTOTITLE](/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-membership-in-organizations)"
